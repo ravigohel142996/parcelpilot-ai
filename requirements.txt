@@ -1,0 +1,11 @@
+# ParcelPilot AI - Core Dependencies
+streamlit>=1.30.0
+python-dotenv>=1.0.0
+pytest>=8.0.0
+pydantic>=2.0.0
+pypdf>=4.0.0
+numpy>=1.20.0
+scikit-learn>=1.0.0
+google-genai>=0.1.0
+
+
