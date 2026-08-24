@@ -145,8 +145,25 @@ def main():
     # Sidebar Health Checks / System Status
     st.sidebar.subheader("System Status")
     
-    # 1. Agent Engine health
+    # Try loading from streamlit secrets
+    try:
+        if "GEMINI_API_KEY" not in os.environ and "GEMINI_API_KEY" in st.secrets:
+            os.environ["GEMINI_API_KEY"] = st.secrets["GEMINI_API_KEY"]
+    except Exception:
+        pass
+        
     has_api_key = "GEMINI_API_KEY" in os.environ and os.environ["GEMINI_API_KEY"] != ""
+    
+    if not has_api_key:
+        api_key_input = st.sidebar.text_input(
+            "🔑 Enter Gemini API Key",
+            type="password",
+            help="Get an API key from https://ai.google.dev/gemini-api/docs/api-key"
+        )
+        if api_key_input:
+            os.environ["GEMINI_API_KEY"] = api_key_input
+            has_api_key = True
+            
     agent_status = "status-active" if has_api_key else "status-inactive"
     agent_text = "Active" if has_api_key else "Missing API Key"
     st.sidebar.markdown(f'<span class="status-dot {agent_status}"></span> **Agent Engine:** {agent_text}', unsafe_allow_html=True)
