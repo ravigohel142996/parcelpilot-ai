@@ -35,7 +35,8 @@ SNAPSHOT_TIME = datetime.strptime(SNAPSHOT_TIME_STR, "%Y-%m-%d %H:%M")
 def get_db_connection():
     """Establishes and returns a database connection that returns rows as dictionaries."""
     if not os.path.exists(DB_PATH):
-        raise FileNotFoundError(f"Database not initialized. Please run db/setup_db.py first. Path: {DB_PATH}")
+        from db.setup_db import setup_database
+        setup_database()
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn

@@ -115,6 +115,22 @@ def get_tool_badge(tool_name: str) -> str:
     return TOOL_LABELS.get(tool_name, f"🛠️ Executing {tool_name}")
 
 def main():
+    # Auto-initialize database if missing
+    if not os.path.exists("db/parcelpilot.db"):
+        try:
+            from db.setup_db import setup_database
+            setup_database()
+        except Exception as e:
+            st.sidebar.error(f"Failed to auto-initialize database: {e}")
+            
+    # Auto-initialize RAG index if missing
+    if not os.path.exists("db/vector_index.pkl"):
+        try:
+            from rag.index import load_index
+            load_index()
+        except Exception as e:
+            st.sidebar.error(f"Failed to auto-initialize RAG index: {e}")
+
     # Sidebar Profile Section
     st.sidebar.markdown("# 📦 PARCELPILOT AI")
     st.sidebar.markdown("---")
